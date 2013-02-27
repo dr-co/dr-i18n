@@ -9,7 +9,7 @@ use Carp;
 use File::Spec::Functions 'catfile';
 use DR::I18n dir => catfile $ENV{MOJO_HOME} || '.', 'po';
 
-my $VERSION = '0.1';
+my $VERSION = '0.3';
 
 
 sub register {
@@ -19,6 +19,13 @@ sub register {
     $conf               ||= {};
 
     $app->helper( __ => sub{ return __ $_[1] } );
+
+    $app->helper( langs => sub{
+        return [
+            sort {$a->{code} cmp $b->{code}}
+            values %{ po->available }
+        ];
+    });
 
     $app->hook(before_dispatch => sub {
         my $c = shift;

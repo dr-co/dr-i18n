@@ -41,7 +41,6 @@ note 'Exports';
     is __ 'Одна строка %s', 'Some string %s', '__"..."';
 }
 
-
 =head1 COPYRIGHT
 
 Copyright (C) 2011 Dmitry E. Oboukhov <unera@debian.org>

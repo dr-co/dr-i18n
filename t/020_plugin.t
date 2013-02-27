@@ -6,7 +6,7 @@ use utf8;
 use open qw(:std :utf8);
 use lib qw(lib ../lib ../../lib);
 
-use Test::More tests => 9;
+use Test::More tests => 12;
 use Encode qw(decode encode);
 
 
@@ -56,6 +56,23 @@ note 'Translations';
         'Accept-Language' => 'en-US;q=0.6,en;q=0.4'
     })  ->status_is( 200 )
         ->content_like(qr{Some string %s});
+
+    diag decode utf8 => $t->tx->res->body unless $t->tx->success;
+}
+
+note 'List of aviable languages';
+{
+    $t->app->routes->post("/langs")->to( cb => sub {
+        my ($self) = @_;
+
+        is scalar @{$self->langs}, 2, 'List';
+
+        $self->render(text => 'OK.');
+    });
+
+    $t->post_ok("/langs" => {
+        'Accept-Language' => 'en-US;q=0.6,en;q=0.4'
+    })  ->status_is( 200 );
 
     diag decode utf8 => $t->tx->res->body unless $t->tx->success;
 }
