@@ -31,6 +31,8 @@ note 'Available list';
     my $a = $po->available;
     isa_ok $a, 'HASH', 'Available hash';
     is scalar keys %$a, 2, 'Two languages';
+
+    die explain $a;
 }
 
 note 'Exports';

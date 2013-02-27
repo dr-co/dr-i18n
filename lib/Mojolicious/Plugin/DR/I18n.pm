@@ -9,7 +9,7 @@ use Carp;
 use File::Spec::Functions 'catfile';
 use DR::I18n dir => catfile $ENV{MOJO_HOME} || '.', 'po';
 
-my $VERSION = '0.3';
+my $VERSION = '0.4';
 
 
 sub register {

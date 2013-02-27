@@ -4,12 +4,12 @@ use utf8;
 use base qw(Exporter);
 use feature qw(state);
 
-our $VERSION = '0.3';
+our $VERSION = '0.4';
 our @EXPORT = our @EXPORT_OK = qw(__ po);
 
 use Carp;
 use Locale::PO;
-use Locale::Language;
+use Locales;
 
 use File::Spec::Functions   qw(catfile);
 use File::Basename          qw(basename);
@@ -113,8 +113,15 @@ sub _build_dict {
 sub _build_available {
     my ($self) = @_;
 
-    my %list = map {( $_ => { code => $_, name => code2language $_} )}
-        sort keys %{ $self->dict };
+
+    my %list;
+    for my $code ( keys %{ $self->dict } ) {
+        $list{ $code }{code} = $code;
+
+        my $locale = Locales->new( $code );
+        $list{ $code }{language} =
+            decode_utf8 $locale->get_native_language_from_code( $code );
+    }
 
     return \%list;
 }

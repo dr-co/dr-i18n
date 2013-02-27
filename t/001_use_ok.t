@@ -13,7 +13,7 @@ use Encode qw(decode encode);
 BEGIN {
     require_ok 'Mouse';
     require_ok 'Locale::PO';
-    require_ok 'Locale::Language';
+    require_ok 'Locales';
     require_ok 'Mojolicious';
 }
 

@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.4) nowtaxi; urgency=low
+
+  * Fix language names
+
+ -- Roman V. Nikolaev <rshadow@rambler.ru>  Wed, 27 Feb 2013 23:00:52 +0400
+
 libdr-i18n-perl (0.3) nowtaxi; urgency=low
 
   * Add langs helper

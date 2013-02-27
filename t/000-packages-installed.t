@@ -6,7 +6,7 @@ use utf8;
 use open qw(:std :utf8);
 use lib qw(lib ../lib);
 
-use Test::More tests    => 6;
+use Test::More tests    => 7;
 use Test::Debian;
 
 system_is_debian;
@@ -20,5 +20,6 @@ __DATA__
 libtest-compile-perl
 libtest-debian-perl
 liblocale-po-perl
+liblocales-perl
 libmojolicious-perl
 libmouse-perl
