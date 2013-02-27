@@ -13,6 +13,7 @@ WriteMakefile(
     MIN_PERL_VERSION => '5.10.0',
     PREREQ_PM       => {
         'Locale::PO'                    => '0',
+        'Locales'                       => '0',
         'Test::Compile'                 => '0',
         'Test::More'                    => '0',
         'Test::Debian'                  => '0',
