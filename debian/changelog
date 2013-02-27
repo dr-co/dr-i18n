@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.2) nowtaxi; urgency=low
+
+  * Fix origin language selection
+
+ -- Roman V. Nikolaev <rshadow@rambler.ru>  Wed, 27 Feb 2013 20:49:16 +0400
+
 libdr-i18n-perl (0.1) nowtaxi; urgency=low
 
   * Initial Release.

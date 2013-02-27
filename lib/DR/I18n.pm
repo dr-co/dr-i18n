@@ -4,7 +4,7 @@ use utf8;
 use base qw(Exporter);
 use feature qw(state);
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 our @EXPORT = our @EXPORT_OK = qw(__ po);
 
 use Carp;
@@ -57,6 +57,18 @@ sub gettext {
     my $id = encode_utf8( Locale::PO->quote( $msg ) );
 
     for my $lang ( @{$self->langs}, 'en' ) {
+
+        if( $lang eq $self->origin ) {
+            last unless exists $self->dict->{ $lang };
+            last unless exists $self->dict->{ $lang }{ $id };
+            my $str = decode_utf8 $self->dict->{ $lang }{ $id }->dequote(
+                $self->dict->{ $lang }{ $id }->msgstr
+            );
+            last unless defined $str;
+            last unless length $str;
+            return $str;
+        }
+
         # Пропустим отсутствующий язык
         next unless exists $self->dict->{ $lang };
         next unless exists $self->dict->{ $lang }{ $id };
@@ -68,15 +80,13 @@ sub gettext {
             $self->dict->{ $lang }{ $id }->msgstr
         );
 
-        if( $lang ne $self->origin ) {
-            # Пропустим если перевода нет
-            next unless defined $str;
-            next unless length $str;
-            # Пропустим если перевода нет, а была простая копипаста
-            next if $str eq  $msg;
-        }
+        # Пропустим если перевода нет
+        next unless defined $str;
+        next unless length $str;
+        # Пропустим если перевода нет, а была простая копипаста
+        next if $str eq  $msg;
 
-        return $str || $msg;
+        return $str;
     }
 
     return $msg;
