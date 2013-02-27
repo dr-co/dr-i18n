@@ -1,0 +1,15 @@
+Source: libdr-i18n-perl
+Section: perl
+Priority: optional
+Maintainer: Roman V. Nikolaev <rshadow@rambler.ru>
+Build-Depends: debhelper (>= 8)
+Build-Depends-Indep: perl, liblocale-po-perl
+Standards-Version: 3.9.3
+Homepage: http://search.cpan.org/dist/DR-I18n/
+
+Package: libdr-i18n-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}, liblocale-po-perl
+Description: Simple internatialization
+  The package contains some modules that help You to add internationalization
+  Your site/modules.
