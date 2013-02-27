@@ -4,7 +4,7 @@ use utf8;
 use base qw(Exporter);
 use feature qw(state);
 
-our $VERSION = '0.4';
+our $VERSION = '0.5';
 our @EXPORT = our @EXPORT_OK = qw(__ po);
 
 use Carp;

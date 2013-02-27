@@ -6,7 +6,7 @@ use utf8;
 use open qw(:std :utf8);
 use lib qw(lib ../lib ../../lib);
 
-use Test::More tests => 12;
+use Test::More tests => 18;
 use Encode qw(decode encode);
 
 
@@ -65,13 +65,39 @@ note 'List of aviable languages';
     $t->app->routes->post("/langs")->to( cb => sub {
         my ($self) = @_;
 
-        is scalar @{$self->langs}, 2, 'List';
+        is scalar @{$self->langs_available}, 2, 'List';
 
         $self->render(text => 'OK.');
     });
 
     $t->post_ok("/langs" => {
         'Accept-Language' => 'en-US;q=0.6,en;q=0.4'
+    })  ->status_is( 200 );
+
+    diag decode utf8 => $t->tx->res->body unless $t->tx->success;
+}
+
+note 'Cookie force';
+{
+    $t->app->routes->get("/set_lang")->to(cb => sub {
+        my ($self) = @_;
+        $self->session(lang => 'tr');
+        $self->render(text => 'OK.');
+    });
+    $t->app->routes->post("/force")->to(cb => sub {
+        my ($self) = @_;
+
+        is $self->session('lang'), 'tr', 'Saved tr';
+        is $self->langs_priority->[0], 'tr', 'Forced tr';
+
+        $self->render(text => 'OK.');
+    });
+
+    # Get cookie
+    $t->get_ok("/set_lang")->status_is( 200 );
+    # Send forced
+    $t->post_ok("/force" => {
+        'Accept-Language' => 'en-US;q=0.6,en;q=0.4',
     })  ->status_is( 200 );
 
     diag decode utf8 => $t->tx->res->body unless $t->tx->success;

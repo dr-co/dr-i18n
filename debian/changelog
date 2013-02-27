@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.5) nowtaxi; urgency=low
+
+  * Add ability to force language
+
+ -- Roman V. Nikolaev <rshadow@rambler.ru>  Thu, 28 Feb 2013 00:27:35 +0400
+
 libdr-i18n-perl (0.4) nowtaxi; urgency=low
 
   * Fix language names

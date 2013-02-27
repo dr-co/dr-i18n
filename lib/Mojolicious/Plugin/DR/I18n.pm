@@ -9,7 +9,7 @@ use Carp;
 use File::Spec::Functions 'catfile';
 use DR::I18n dir => catfile $ENV{MOJO_HOME} || '.', 'po';
 
-my $VERSION = '0.4';
+my $VERSION = '0.5';
 
 
 sub register {
@@ -20,24 +20,36 @@ sub register {
 
     $app->helper( __ => sub{ return __ $_[1] } );
 
-    $app->helper( langs => sub{
+    $app->helper( langs_available => sub{
         return [
             sort {$a->{code} cmp $b->{code}}
             values %{ po->available }
         ];
     });
 
+    $app->helper( langs_priority => sub{ return po->langs });
+
     $app->hook(before_dispatch => sub {
         my $c = shift;
-        my @langs = split m{\s*,\s*}, $c->req->headers->accept_language;
+
+        my @langs = split m{\s*,\s*}, $c->req->headers->accept_language // '';
         my %exists;
+
+        # Make list of accepted langusges
         for my $index ( reverse 0 .. $#langs ) {
             $langs[$index] =~ s{\s*;.*}{};
+            $langs[$index] = substr $langs[$index], 0, 10;
 
             $exists{ $langs[$index] } = 1;
             if( $langs[$index] =~ m{(.*?)[-_]} ) {
                 splice @langs, $index, 1, $langs[$index], $1 unless $exists{$1};
             }
+        }
+
+        # Force language from session
+        if( $c->session('lang') ) {
+            my $force = substr $c->session('lang'), 0, 10;
+            unshift @langs, $force;
         }
 
         po->langs( \@langs );
