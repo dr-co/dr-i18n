@@ -6,10 +6,11 @@ package Mojolicious::Plugin::DR::I18n;
 use Mojo::Base 'Mojolicious::Plugin';
 
 use Carp;
-use File::Spec::Functions 'catfile';
-use DR::I18n dir => catfile $ENV{MOJO_HOME} || '.', 'po';
+use File::Spec::Functions   qw(rel2abs catdir);
 
-my $VERSION = '0.5';
+use DR::I18n dir => rel2abs catdir $ENV{MOJO_HOME} || '.', 'po';
+
+my $VERSION = '0.6';
 
 
 sub register {
