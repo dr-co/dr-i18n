@@ -6,13 +6,14 @@ use utf8;
 use open qw(:std :utf8);
 use lib qw(lib ../lib);
 
-use Test::More tests    => 13;
+use Test::More tests    => 14;
 
 BEGIN {
-    use_ok 'DR::I18n', 'dir' => 't/po';
+    use_ok 'File::Spec::Functions', 'rel2abs';
+    use_ok 'DR::I18n', 'dir' => rel2abs('t/po');
 }
 
-my $po = DR::I18n->new( dir => 't/po', origin => 'ru' );
+my $po = DR::I18n->new( dir => rel2abs('t/po'), origin => 'ru' );
 ok $po, 'Object created';
 
 note 'Translations';
@@ -37,7 +38,6 @@ note 'Exports';
 {
     isa_ok po, 'DR::I18n';
     ok po->langs(['en']), 'Set en language';
-
     is __ 'Одна строка %s', 'Some string %s', '__"..."';
 }
 

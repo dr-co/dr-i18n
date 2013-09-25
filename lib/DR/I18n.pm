@@ -14,6 +14,7 @@ use Locales;
 use File::Spec::Functions   qw(catfile);
 use File::Basename          qw(basename);
 use Encode                  qw(decode_utf8 encode_utf8);
+use Data::Dumper;
 
 # Froce base directory
 our $BASEDIR;
@@ -54,16 +55,27 @@ has available       => is => 'ro', isa => 'HashRef',
 sub gettext {
     my ($self, $msg) = @_;
 
-    my $id = encode_utf8( Locale::PO->quote( $msg ) );
+
+    my $idutf = Locale::PO->quote( $msg );
+    my $id = encode_utf8( $idutf );
+
 
     for my $lang ( @{$self->langs}, 'en' ) {
 
         if( $lang eq $self->origin ) {
             last unless exists $self->dict->{ $lang };
-            last unless exists $self->dict->{ $lang }{ $id };
-            my $str = decode_utf8 $self->dict->{ $lang }{ $id }->dequote(
-                $self->dict->{ $lang }{ $id }->msgstr
-            );
+
+            my $d;
+
+            if (exists $self->dict->{ $lang }{ $id }) {
+                $d = $self->dict->{ $lang }{ $id };
+            } elsif (exists $self->dict->{ $lang }{ $idutf }) {
+                $d = $self->dict->{ $lang }{ $idutf };
+            } else {
+                last;
+            }
+
+            my $str = decode_utf8 $d->dequote( $d->msgstr );
             last unless defined $str;
             last unless length $str;
             return $str;
@@ -71,14 +83,20 @@ sub gettext {
 
         # Пропустим отсутствующий язык
         next unless exists $self->dict->{ $lang };
-        next unless exists $self->dict->{ $lang }{ $id };
+
+        my $d;
+        if (exists $self->dict->{ $lang }{ $id }) {
+            $d = $self->dict->{ $lang }{ $id };
+        } elsif (exists $self->dict->{ $lang }{ $idutf }) {
+            $d = $self->dict->{ $lang }{ $idutf };
+        } else {
+            next;
+        }
         # Попустим строку с неточным переводом
-        next if $self->dict->{ $lang }{ $id }->fuzzy;
+        next if $d->fuzzy;
 
         # Получим перевод
-        my $str = decode_utf8 $self->dict->{ $lang }{ $id }->dequote(
-            $self->dict->{ $lang }{ $id }->msgstr
-        );
+        my $str = decode_utf8 $d->dequote( $d->msgstr );
 
         # Пропустим если перевода нет
         next unless defined $str;
@@ -122,7 +140,6 @@ sub _build_available {
         $list{ $code }{language} =
             decode_utf8 $locale->get_native_language_from_code( $code );
     }
-
     return \%list;
 }
 
@@ -130,7 +147,7 @@ sub import {
     my ($package, @args) = @_;
 
     for (0 .. $#args - 1) {
-        if ($args[$_] ~~ 'dir') {
+        if ($args[$_] and $args[$_] eq 'dir') {
             (undef, $BASEDIR) = splice @args, $_, 2;
             redo;
         }

@@ -1,8 +1,8 @@
 libdr-i18n-perl (0.6) nowtaxi; urgency=low
 
-  * Fix path to po files 
+  * Perl 5.18 compatible.
 
- -- Roman V. Nikolaev <rshadow@rambler.ru>  Mon, 04 Mar 2013 17:28:24 +0400
+ -- Dmitry E. Oboukhov <unera@debian.org>  Wed, 25 Sep 2013 18:34:52 +0400
 
 libdr-i18n-perl (0.5) nowtaxi; urgency=low
 
