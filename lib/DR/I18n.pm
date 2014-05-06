@@ -60,7 +60,7 @@ sub gettext {
     my $id = encode_utf8( $idutf );
 
 
-    for my $lang ( @{$self->langs}, 'en' ) {
+    for my $lang ( @{$self->langs}, $self->origin ) {
 
         if( $lang eq $self->origin ) {
             last unless exists $self->dict->{ $lang };

@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.8) nowtaxi; urgency=low
+
+  * Origin languade by default
+
+ -- Roman V. Nikolaev <rshadow@rambler.ru>  Tue, 06 May 2014 17:14:15 +0400
+
 libdr-i18n-perl (0.7) nowtaxi; urgency=low
 
   * Fix path to po files

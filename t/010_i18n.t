@@ -6,7 +6,7 @@ use utf8;
 use open qw(:std :utf8);
 use lib qw(lib ../lib);
 
-use Test::More tests    => 14;
+use Test::More tests    => 17;
 
 BEGIN {
     use_ok 'File::Spec::Functions', 'rel2abs';
@@ -18,6 +18,10 @@ ok $po, 'Object created';
 
 note 'Translations';
 {
+    ok $po->langs([]), 'Set from origin';
+    is $po->gettext('Одна строка %s'), 'Одна строка %s', 'Complete';
+    is $po->gettext('Другая строка'),  'Другая строка', 'Complete';
+
     ok $po->langs(['en']), 'Set en language';
     is $po->gettext('Одна строка %s'), 'Some string %s', 'Complete';
     is $po->gettext('Другая строка'),  'Another string', 'Complete';
