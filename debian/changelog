@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.9) nowtaxi; urgency=medium
+
+  * __ helper works like sprintf.
+
+ -- Dmitry E. Oboukhov <unera@debian.org>  Fri, 02 Jun 2017 18:06:32 +0300
+
 libdr-i18n-perl (0.8) nowtaxi; urgency=low
 
   * Origin languade by default

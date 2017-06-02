@@ -6,7 +6,7 @@ use utf8;
 use open qw(:std :utf8);
 use lib qw(lib ../lib ../../lib);
 
-use Test::More tests => 18;
+use Test::More tests => 19;
 use Encode qw(decode encode);
 
 
@@ -54,8 +54,10 @@ note 'Translations';
 
     $t->post_ok("/index" => {
         'Accept-Language' => 'en-US;q=0.6,en;q=0.4'
-    })  ->status_is( 200 )
-        ->content_like(qr{Some string %s});
+    })  -> status_is( 200 )
+        -> content_like(qr{Some string %s})
+        -> content_like(qr(two add два))
+    ;
 
     diag decode utf8 => $t->tx->res->body unless $t->tx->success;
 }
@@ -103,6 +105,7 @@ note 'Cookie force';
     diag decode utf8 => $t->tx->res->body unless $t->tx->success;
 }
 
+
 =head1 COPYRIGHT
 
 Copyright (C) 2011 Dmitry E. Oboukhov <unera@debian.org>
@@ -119,4 +122,6 @@ __DATA__
 @@my_app/index.html.ep
 
 %= __('Одна строка %s')
+
+%= __ 'два плюс %s', 'два'
 

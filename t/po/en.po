@@ -25,3 +25,8 @@ msgstr "Some string %s"
 #: templates/layouts/head.html.ep:4
 msgid "Другая строка"
 msgstr "Another string"
+
+#: 
+#, perl-format
+msgid "два плюс %s"
+msgstr "two add %s"
