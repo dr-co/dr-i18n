@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.10) nowtaxi; urgency=medium
+
+  * Drop artefacts.
+
+ -- Dmitry E. Oboukhov <unera@debian.org>  Fri, 02 Jun 2017 18:16:22 +0300
+
 libdr-i18n-perl (0.9) nowtaxi; urgency=medium
 
   * __ helper works like sprintf.

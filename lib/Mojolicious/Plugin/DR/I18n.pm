@@ -10,7 +10,7 @@ use File::Spec::Functions   qw(rel2abs catdir);
 
 use DR::I18n dir => rel2abs catdir $ENV{MOJO_HOME} || '.', 'po';
 
-my $VERSION = '0.9';
+my $VERSION = '0.10';
 
 
 sub register {
@@ -22,7 +22,6 @@ sub register {
     $app->helper( __ => sub {
         my ($self, $fmt, @args) = @_;
         return undef unless defined $fmt;
-        my $res = __ $fmt;
         return sprintf(__($fmt), @args) if @args;
         return __ $fmt;
     });
