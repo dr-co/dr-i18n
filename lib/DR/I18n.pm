@@ -4,7 +4,7 @@ use utf8;
 use base qw(Exporter);
 use feature qw(state);
 
-our $VERSION = '0.9';
+our $VERSION = '0.11';
 our @EXPORT = our @EXPORT_OK = qw(__ po);
 
 use Carp;
@@ -13,7 +13,6 @@ use Locales;
 
 use File::Spec::Functions   qw(catfile);
 use File::Basename          qw(basename);
-use Encode                  qw(decode_utf8 encode_utf8);
 use Data::Dumper;
 
 # Froce base directory
@@ -57,7 +56,8 @@ sub gettext {
 
 
     my $idutf = Locale::PO->quote( $msg );
-    my $id = encode_utf8( $idutf );
+    my $id = $idutf;
+    utf8::encode $id if utf8::is_utf8 $id;
 
 
     for my $lang ( @{$self->langs}, $self->origin ) {
@@ -75,7 +75,8 @@ sub gettext {
                 last;
             }
 
-            my $str = decode_utf8 $d->dequote( $d->msgstr );
+            my $str = $d->dequote( $d->msgstr );
+            utf8::decode $str unless utf8::is_utf8 $str;
             last unless defined $str;
             last unless length $str;
             return $str;
@@ -96,7 +97,8 @@ sub gettext {
         next if $d->fuzzy;
 
         # Получим перевод
-        my $str = decode_utf8 $d->dequote( $d->msgstr );
+        my $str = $d->dequote( $d->msgstr );
+        utf8::decode $str unless utf8::is_utf8 $str;
 
         # Пропустим если перевода нет
         next unless defined $str;
@@ -138,7 +140,9 @@ sub _build_available {
 
         my $locale = Locales->new( $code );
         $list{ $code }{language} =
-            decode_utf8 $locale->get_native_language_from_code( $code );
+            $locale->get_native_language_from_code( $code );
+        utf8::decode $list{ $code }{language}
+            unless utf8::is_utf8 $list{ $code }{language};
     }
     return \%list;
 }

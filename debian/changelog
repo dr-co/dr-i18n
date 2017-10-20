@@ -1,3 +1,9 @@
+libdr-i18n-perl (0.11) nowtaxi; urgency=medium
+
+  * Drop Encode depends.
+
+ -- Dmitry E. Oboukhov <unera@debian.org>  Fri, 20 Oct 2017 13:09:54 +0300
+
 libdr-i18n-perl (0.10) nowtaxi; urgency=medium
 
   * Drop artefacts.
